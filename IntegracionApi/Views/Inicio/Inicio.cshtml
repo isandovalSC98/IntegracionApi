@@ -1,0 +1,64 @@
+﻿@model IntegracionApi.ViewModel.SeasonsViewModel
+
+<div class="container">
+    <div class="row">
+
+            <div id="busqueda">
+                <div class="col-md-6">
+                    <select class="form-select" id="yearSelect" aria-label="Default select example">
+                        <option>...</option>
+                        @foreach (var item in Model.Items)
+                        {
+                            <option value="@item.Year" data-seasons="@string.Join(",", item.Seasons)">@item.Year</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Season</label>
+                    <select id="seasonSelect" class="form-select" disabled>
+                        <option value="">...</option>
+                    </select>
+                </div>
+            </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <input type="submit" class="btn btn-primary" name="Enviar" value="Enviar" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const yearSelect = document.getElementById("yearSelect");
+    const seasonSelect = document.getElementById("seasonSelect");
+
+    function resetSeasons() {
+      seasonSelect.innerHTML = '<option value="">...</option>';
+      seasonSelect.disabled = true;
+    }
+
+    yearSelect.addEventListener("change", () => {
+      resetSeasons();
+
+      const opt = yearSelect.options[yearSelect.selectedIndex];
+      const seasonsStr = opt?.dataset?.seasons || "";
+      if (!seasonsStr) return;
+
+      const seasons = seasonsStr.split(",").map(s => s.trim()).filter(Boolean);
+
+      for (const s of seasons) {
+        const o = document.createElement("option");
+        o.value = s;      // winter/spring/summer/fall
+        o.textContent = s; // si quieres: s.toUpperCase()
+        seasonSelect.appendChild(o);
+      }
+
+      seasonSelect.disabled = false;
+    });
+</script>
+
