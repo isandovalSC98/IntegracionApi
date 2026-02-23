@@ -27,5 +27,11 @@ namespace IntegracionApi.Servicios
             var url = await _httpClient.GetFromJsonAsync<JikanResponseDTO<List<AnimeCharactersItemDTO>>>($"anime/{animeId}/characters", cancellationToken : ct);
             return url?.Data ?? new List<AnimeCharactersItemDTO>();
         }
+
+        public async Task<List<TopAnimeDTO>> ObtenerTopAnime(CancellationToken ct = default)
+        {
+            var url = await _httpClient.GetFromJsonAsync<JikanResponseDTO<List<JikanTopAnime>>>("top/anime", cancellationToken: ct);
+            return url?.Data?.Select(x => new TopAnimeDTO { Data = x }).ToList() ?? new List<TopAnimeDTO>();
+        }
     }
 }

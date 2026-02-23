@@ -2,6 +2,7 @@
 using IntegracionApi.Servicios;
 using IntegracionApi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace IntegracionApi.Controllers
 {
@@ -14,22 +15,24 @@ namespace IntegracionApi.Controllers
             _servicioApi = servicioApi ?? throw new ArgumentNullException(nameof(servicioApi));
         }
 
-        //public IActionResult Inicio()
-        //{
-        //    return View();
-        //}
+        public async Task<IActionResult> Inicio()
+        {
+            var topAnime = new TopAnimeViewModel { Items = await _servicioApi.ObtenerTopAnime() };
+
+            return View(topAnime);
+        }
 
         //[HttpPost]
         //public async Task<IActionResult> Inicio(string nombre, int edad) {
 
-            
+
         //    ViewBag.respuesta = nombre+" "+ edad;
         //    //Console.ReadKey();
         //    return View();
         //}
         [HttpGet("/seasons")]
         //public async Task<IActionResult>seasons() =>Ok(await _servicioApi.ObtenerSeason());
-        public async Task<IActionResult> Inicio()
+        public async Task<IActionResult> Season()
         {
 
             var temporadas = new SeasonsViewModel { Items = await _servicioApi.ObtenerSeason() };
@@ -46,5 +49,8 @@ namespace IntegracionApi.Controllers
             return View(personajes);
 
         }
+
+        [HttpGet("/top/anime")]
+        public async Task<IActionResult> Characters(CancellationToken ct) => Ok(await _servicioApi.ObtenerTopAnime(ct));
     }
 }

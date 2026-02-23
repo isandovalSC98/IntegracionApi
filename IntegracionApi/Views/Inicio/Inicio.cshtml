@@ -1,64 +1,44 @@
-﻿@model IntegracionApi.ViewModel.SeasonsViewModel
-
-<div class="container">
-    <div class="row">
-
-            <div id="busqueda">
-                <div class="col-md-6">
-                    <select class="form-select" id="yearSelect" aria-label="Default select example">
-                        <option>...</option>
-                        @foreach (var item in Model.Items)
-                        {
-                            <option value="@item.Year" data-seasons="@string.Join(",", item.Seasons)">@item.Year</option>
-                        }
-                    </select>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Season</label>
-                    <select id="seasonSelect" class="form-select" disabled>
-                        <option value="">...</option>
-                    </select>
-                </div>
-            </div>
+﻿@model IntegracionApi.ViewModel.TopAnimeViewModel
+<div class="row">
+    <div class="col-md-8" style="background-color: aqua;">
+        dasdas
     </div>
-    <br />
-    <div class="row">
-        <div class="col-md-12">
-            <div>
-                <input type="submit" class="btn btn-primary" name="Enviar" value="Enviar" />
-            </div>
-        </div>
+    <div class="col-md-4" style="background-color: bisque;">
+       <div class="sidebar">
+           <div class="container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><h1>Top</h1></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var anime in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="card mb-3" style="max-width: 540px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-4">
+                                                @* <img src="https://cdn.myanimelist.net/images/anime/1447/155444l.jpg" class="img-fluid rounded-start" alt="..."> *@
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@anime.Data.Title</h5>
+                                                    <p class="card-text">@anime.Data.Episodes</p>
+                                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+
+                </table>
+           </div>
+
+       </div>
     </div>
 </div>
-
-
-<script>
-    const yearSelect = document.getElementById("yearSelect");
-    const seasonSelect = document.getElementById("seasonSelect");
-
-    function resetSeasons() {
-      seasonSelect.innerHTML = '<option value="">...</option>';
-      seasonSelect.disabled = true;
-    }
-
-    yearSelect.addEventListener("change", () => {
-      resetSeasons();
-
-      const opt = yearSelect.options[yearSelect.selectedIndex];
-      const seasonsStr = opt?.dataset?.seasons || "";
-      if (!seasonsStr) return;
-
-      const seasons = seasonsStr.split(",").map(s => s.trim()).filter(Boolean);
-
-      for (const s of seasons) {
-        const o = document.createElement("option");
-        o.value = s;      // winter/spring/summer/fall
-        o.textContent = s; // si quieres: s.toUpperCase()
-        seasonSelect.appendChild(o);
-      }
-
-      seasonSelect.disabled = false;
-    });
-</script>
-
